@@ -12,7 +12,10 @@ enum {
     add, sub, mul, dvd, set, neg, rev, new, op_num,
 }; 
 char const*const ops[op_num] = {
-    [add] = "add", [sub] = "sub", [mul] = "mul", [dvd] = "div", [set] = "set", [neg] = "neg", [rev] = "rev", [new] = "new",
+    [add] = "add", [sub] = "sub", [mul] = "mul", [dvd] = "dvd", [set] = "set", [neg] = "neg", [rev] = "rev", [new] = "new",
+}; 
+int (*ops_def[op_num])() = {
+    [add] = &arr_add, [sub] = &arr_sub, [mul] = &arr_mul, [dvd] = &arr_dvd, [set] = &arr_set, [neg] = &arr_neg, [rev] = &arr_rev, [new] = &arr_new,
 }; 
 
 int main(int argc, char* argv[argc + 1]) {
@@ -62,35 +65,10 @@ int main(int argc, char* argv[argc + 1]) {
         for(int i = 0; i < op_num; i++) {
             if(strncmp(str, ops[i], 3) == 0) {
                 int op_arg = 0; 
+                int err = 0; 
                 if(i < neg) {
                     scanf("%d", &op_arg); 
-                }
-                int err = 0; 
-                switch(i) {
-                    case add: 
-                        err += arr_add(arr, arr_len, op_arg); 
-                        break; 
-                    case sub: 
-                        err += arr_sub(arr, arr_len, op_arg); 
-                        break; 
-                    case mul: 
-                        err += arr_mul(arr, arr_len, op_arg); 
-                        break; 
-                    case dvd: 
-                        err += arr_dvd(arr, arr_len, op_arg); 
-                        break; 
-                    case set: 
-                        err += arr_set(arr, arr_len, op_arg); 
-                        break; 
-                    case neg: 
-                        err += arr_neg(arr, arr_len); 
-                        break; 
-                    case rev: 
-                        err += arr_rev(arr, arr_len); 
-                        break; 
-                    case new: 
-                        err += arr_new(arr, arr_len); 
-                        break; 
+                    err = ops_def[i](arr, arr_len, op_arg); 
                 }
 
                 // If an error occurred, return.  
