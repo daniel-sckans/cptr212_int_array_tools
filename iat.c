@@ -69,6 +69,8 @@ int main(int argc, char* argv[argc + 1]) {
                 if(i < neg) {
                     scanf("%d", &op_arg); 
                     err = ops_def[i](arr, arr_len, op_arg); 
+                } else {
+                    err = ops_def[i](arr, arr_len); 
                 }
 
                 // If an error occurred, return.  
